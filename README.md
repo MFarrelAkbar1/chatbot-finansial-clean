@@ -38,6 +38,9 @@ cp .env.example .env
 npm start
 
 ```
+
+### Screenshot
+---
 ![QR](image/1.jpeg)
 ![Chat 1](image/2.jpeg)
 ![Chat 2](image/3.jpeg)
