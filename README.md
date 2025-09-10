@@ -36,3 +36,11 @@ cp .env.example .env
 
 # Jalankan bot
 npm start
+
+```
+![QR](image/1.jpeg)
+![Chat 1](image/2.jpeg)
+![Chat 2](image/3.jpeg)
+![Chat 3](image/4.jpeg)
+![Chat 4](image/5.jpeg)
+![Chat 5](image/6.jpeg)
