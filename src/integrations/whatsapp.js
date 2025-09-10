@@ -73,14 +73,14 @@ class WhatsAppBot {
         const contact = await message.getContact();
         const userId = contact.id.user;
         const userName = contact.name || contact.pushname || 'User';
-        
+        const chatId = message.from
         const messageBody = message.body?.trim();
         if (!messageBody) return;
 
         console.log(`📨 ${userName}: ${messageBody}`);
 
         try {
-            const response = await this.bot.processMessage(messageBody, userId);
+            const response = await this.bot.processMessage(messageBody, userId, this.client, chatId);
             await message.reply(response);
             
             console.log(`🤖 Bot: ${response.substring(0, 50)}...`);

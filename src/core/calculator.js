@@ -115,20 +115,55 @@ class FinancialCalculator {
         }).format(amount);
     }
 
-    formatSummaryReport(summary) {
-        if (summary.total === 0) {
-            return `📊 *Laporan ${summary.period}*\n\n❌ Belum ada transaksi dalam periode ini.`;
+    computeSummary(transactions) {
+        if (!transactions || transactions.length === 0) {
+            return {
+                total: 0,
+                count: 0,
+                average: 0,
+                categories: {},
+                transactions: []
+            };
         }
 
-        let report = `📊 *Laporan ${summary.period}*\n\n`;
+        const total = transactions.reduce((sum, t) => sum + t.amount, 0);
+        const count = transactions.length;
+        const average = Math.round(total / count);
+
+        const categories = {};
+        transactions.forEach(t => {
+            if (!categories[t.category]) categories[t.category] = 0;
+            categories[t.category] += t.amount;
+        });
+
+        // Convert created_at strings to Date objects for formatting
+        const formattedTransactions = transactions.map(t => ({
+            ...t,
+            timestamp: new Date(t.created_at)
+        }));
+
+        return {
+            total,
+            count,
+            average,
+            categories,
+            transactions: formattedTransactions
+        };
+    }
+
+
+    formatSummaryReport(summary) {
+
+
+        let report = `📊 *Laporan*\n\n`;
         report += `💰 Total Pengeluaran: ${this.formatCurrency(summary.total)}\n`;
         report += `📝 Jumlah Transaksi: ${summary.count}\n`;
         report += `📈 Rata-rata: ${this.formatCurrency(summary.average)}\n\n`;
-        
+
         report += `🏷️ *Breakdown Kategori:*\n`;
         const sortedCategories = Object.entries(summary.categories)
             .sort(([,a], [,b]) => b - a);
-            
+
         sortedCategories.forEach(([category, amount]) => {
             const percentage = Math.round((amount / summary.total) * 100);
             report += `• ${category}: ${this.formatCurrency(amount)} (${percentage}%)\n`;
@@ -136,14 +171,18 @@ class FinancialCalculator {
 
         if (summary.transactions.length > 0) {
             report += `\n📋 *Transaksi Terakhir:*\n`;
-            summary.transactions.slice(-3).forEach(t => {
-                const date = t.timestamp.toLocaleDateString('id-ID');
-                report += `• ${date}: ${this.formatCurrency(t.amount)} - ${t.description}\n`;
-            });
+            summary.transactions
+                .slice(-3)
+                .forEach(t => {
+                    const date = t.timestamp.toLocaleDateString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                    const description = t.description || t.category;
+                    report += `• ${date}: ${this.formatCurrency(t.amount)} - ${description}\n`;
+                });
         }
 
         return report;
     }
+
 
     getCategoryAnalysis() {
         if (this.data.length === 0) {

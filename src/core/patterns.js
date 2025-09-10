@@ -5,46 +5,72 @@ class PatternMatcher {
                 /^(hai|halo|hello|hi|selamat\s+(pagi|siang|sore|malam))/i,
                 /^(apa\s+kabar|gimana\s+kabarnya)/i
             ],
-            
+
             record_transaction: [
                 /^\/catat\s+(\d+)\s+(.+)/i,
                 /^catat\s+(\d+)\s+(.+)/i,
                 /^(bayar|beli|buat)\s+(.+?)\s+(\d+)/i
             ],
-            
+
             daily_summary: [
                 /berapa\s+(duit|uang|dana)\s+.*(hari\s+ini|today)/i,
                 /pengeluaran\s+hari\s+ini/i,
                 /total\s+.*(hari\s+ini|today)/i
             ],
-            
+
             monthly_summary: [
                 /berapa\s+.*(bulan\s+ini|this\s+month)/i,
                 /pengeluaran\s+bulan\s+ini/i,
                 /laporan\s+bulan/i
             ],
-            
+
             period_summary: [
                 /berapa\s+pengeluaran\s+(\d+)\s+(hari|bulan|minggu)\s+terakhir/i,
                 /laporan\s+(\d+)\s+(hari|bulan|minggu)/i,
                 /summary\s+(\d+)\s+(days?|months?|weeks?)/i
             ],
-            
+
             balance_check: [
                 /saldo|balance/i,
-                /berapa\s+(sisa|duit|uang)\s+saya/i
+                /berapa\s+(sisa|duit|uang)\s+saya/i,
+                /how\s+(much|many)\s+do\s+i\s+have\s /i
             ],
-            
+
             help: [
                 /help|bantuan|cara\s+pakai/i,
                 /apa\s+yang\s+bisa\s+kamu\s+lakukan/i,
-                /^\/help$/i
+                /^\/help$/i,
+                /what\s+can\s+you\s+do/i
             ],
-            
+
             category_analysis: [
                 /kategori\s+terbesar/i,
                 /pengeluaran\s+terbanyak\s+untuk\s+apa/i,
                 /analisis\s+kategori/i
+            ],
+
+            export: [
+                /^\/export$/i,
+                /^export$/i,
+                /export\s+(data|csv|file)/i,
+                /simpan\s+(data|csv|file)/i,
+                /download\s+(data|csv|file)/i
+            ],
+
+            statistics: [
+                /^\/stats$/i,
+                /^stats$/i,
+                /^statistik$/i,
+                /rata-?rata\s+per\s+hari/i,
+                /average\s+per\s+day/i
+            ],
+            set_budget: [
+                /^\/setbudget\s+(\d+)/i,
+                /set\s+budget\s+(\d+)/i
+            ],
+            budget_alert: [
+                /budget/i,
+                /pengingat\s+budget/i
             ]
         };
         
@@ -70,6 +96,7 @@ class PatternMatcher {
 "saldo saya" - cek sisa uang
 "kategori terbesar" - analisis pengeluaran
 "bantuan" - tampilkan menu ini
+"export" - memberi file untuk mencatatat pengeluaran
 
 Contoh: /catat 20000 buku kuliah`,
             
